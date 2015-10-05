@@ -6,7 +6,8 @@ var request = require('request'),
 var SPACE_ID = process.env.SPACE_ID,
     ACCESS_TOKEN = process.env.ACCESS_TOKEN,
     POST_CONTENT_TYPE_ID = process.env.POST_CONTENT_TYPE_ID,
-    AUTHOR_CONTENT_TYPE_ID = process.env.AUTHOR_CONTENT_TYPE_ID;
+    AUTHOR_CONTENT_TYPE_ID = process.env.AUTHOR_CONTENT_TYPE_ID,
+    CATEGORY_CONTENT_TYPE_ID = process.env.CATEGORY_CONTENT_TYPE_ID;
 var PORT = process.env.PORT || 3000;
 
 // The Root API URL
@@ -47,6 +48,25 @@ app.get("/api/authors", function(req, res) {
         }
     });
 });
+
+
+
+app.get("/api/categories", function(req, res) {
+    request.get(ROOT_URL + "/" + SPACE_ID + "/entries", {
+        qs: {
+            access_token: ACCESS_TOKEN,
+            content_type: CATEGORY_CONTENT_TYPE_ID
+        }
+    }, function(error, _response, body) {
+        if(error) {
+            res.status(500).end(JSON.stringify({error: error}));
+        } else {
+            res.status(200).end(body);
+        }
+    });
+});
+
+
 
 app.listen(PORT, function() {
     console.log('App listening at http://localhost:%s', PORT);
