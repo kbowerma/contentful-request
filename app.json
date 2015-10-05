@@ -1,0 +1,20 @@
+{
+  "name":"contentful-request",
+  "description":"app.json file used for Heroku review apps",
+  "scripts":{},
+  "env":{
+    "ACCESS_TOKEN":{
+      "required":true
+    },
+    "AUTHOR_CONTENT_TYPE_ID":{
+      "required":true
+    },
+    "POST_CONTENT_TYPE_ID":{
+      "required":true
+    },
+    "SPACE_ID":{
+      "required":true
+    }
+  },
+  "addons":[]
+}
