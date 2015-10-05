@@ -16,7 +16,7 @@ var ROOT_URL = "https://cdn.contentful.com/spaces";
 var app = express();
 
 app.get("/", function(req, res) {
-    res.end("Check out /api/posts and /api/authors!");
+    res.end("Check out /api/posts and /api/authors! \n this is the staging branch");
 });
 
 app.get("/api/posts", function(req, res) {
