@@ -1,5 +1,6 @@
 var request = require('request'),
-    express = require('express');
+    express = require('express'),
+    path    = require('path');
 
 
 // read config from env
@@ -16,7 +17,8 @@ var ROOT_URL = "https://cdn.contentful.com/spaces";
 var app = express();
 
 app.get("/", function(req, res) {
-    res.end("Check out /api/posts and /api/authors! \n this is the staging dev \n second push");
+    //res.end("<a href=\"/api/posts\">/api/posts</a> \n <a href=\"/api/authors\">/api/authors<a> \n <a href=\"/api/categories\">/api/categories<a>");
+     res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.get("/api/posts", function(req, res) {
