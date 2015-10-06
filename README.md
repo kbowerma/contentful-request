@@ -1,4 +1,9 @@
-# Config
+#Contentful-request
+> A simple contentufl api implementation on Node JS that uses Request and not the contentful npm
+
+
+
+## Config
 
 The config variables read from the environment are:
 
@@ -10,8 +15,3 @@ The config variables read from the environment are:
 and optionally
 
 * PORT
-
-# Live Heroku Links
-
-https://thawing-mesa-7109.herokuapp.com/api/posts
-https://thawing-mesa-7109.herokuapp.com/api/authors
