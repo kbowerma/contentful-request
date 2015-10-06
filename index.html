@@ -9,7 +9,17 @@
 <body>
   <div style="margin:100px;">
 
+<pre>
+members/sgodwin uses contentful npm
 
+workaround that involves essentially nulling the function that resolves links:
+
+var contentfulResolveResponsePath = './node_modules/contentful/node_modules/contentful-resolve-response';
+require(contentfulResolveResponsePath);
+require.cache[require.resolve(contentfulResolveResponsePath)].exports = function(obj) {
+    return obj;
+};
+</pre>
 
   <ul>
     <li><a href="/api/posts">/api/posts</a></li>

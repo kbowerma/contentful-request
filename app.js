@@ -1,75 +1,55 @@
-var request = require('request'),
-    express = require('express'),
-    path    = require('path');
+// A simple hack to avoid the link resolving. This will not affect anything else.
 
+var contentfulResolveResponsePath = './node_modules/contentful/node_modules/contentful-resolve-response';
+require(contentfulResolveResponsePath);
+require.cache[require.resolve(contentfulResolveResponsePath)].exports = function(obj) {
+    return obj;
+};
 
-// read config from env
-var SPACE_ID = process.env.SPACE_ID,
-    ACCESS_TOKEN = process.env.ACCESS_TOKEN,
-    POST_CONTENT_TYPE_ID = process.env.POST_CONTENT_TYPE_ID,
-    AUTHOR_CONTENT_TYPE_ID = process.env.AUTHOR_CONTENT_TYPE_ID,
-    CATEGORY_CONTENT_TYPE_ID = process.env.CATEGORY_CONTENT_TYPE_ID;
-var PORT = process.env.PORT || 3000;
+// Dependencies.
 
-// The Root API URL
-var ROOT_URL = "https://cdn.contentful.com/spaces";
+var config = require('./config.js');
+var contentful = require('contentful');
+var express = require('express');
+var path = require('path');
+
+// Create cliemt.
+
+var client = contentful.createClient({
+    space: config.spaceId,
+    accessToken: config.accessToken
+});
 
 var app = express();
+var apiRouter = new express.Router();
 
-app.get("/", function(req, res) {
+app.get('/', function(req, res) {
     //res.end("<a href=\"/api/posts\">/api/posts</a> \n <a href=\"/api/authors\">/api/authors<a> \n <a href=\"/api/categories\">/api/categories<a>");
      res.sendFile(path.join(__dirname+'/index.html'));
 });
 
-app.get("/api/posts", function(req, res) {
-    request.get(ROOT_URL + "/" + SPACE_ID + "/entries", {
-        qs: {
-            access_token: ACCESS_TOKEN,
-            content_type: POST_CONTENT_TYPE_ID
-        }
-    }, function(error, _response, body) {
-        if(error) {
-            res.status(500).end(JSON.stringify({error: error}));
-        } else {
-            res.status(200).end(body);
-        }
-    });
+// Authors endpoint.
+
+apiRouter.get('/authors', function(req, res, next) {
+    client.entries({
+        content_type: config.authorId
+    }).then(function(data) {
+        res.json(data.items);
+    }).catch(next);
 });
 
-app.get("/api/authors", function(req, res) {
-    request.get(ROOT_URL + "/" + SPACE_ID + "/entries", {
-        qs: {
-            access_token: ACCESS_TOKEN,
-            content_type: AUTHOR_CONTENT_TYPE_ID
-        }
-    }, function(error, _response, body) {
-        if(error) {
-            res.status(500).end(JSON.stringify({error: error}));
-        } else {
-            res.status(200).end(body);
-        }
-    });
+// Posts endpoint.
+
+apiRouter.get('/posts', function(req, res, next) {
+    client.entries({
+        content_type: config.postId
+    }).then(function(data) {
+        res.json(data.items);
+    }).catch(next);
 });
 
+app.use('/api', apiRouter);
 
+// Listen.
 
-app.get("/api/categories", function(req, res) {
-    request.get(ROOT_URL + "/" + SPACE_ID + "/entries", {
-        qs: {
-            access_token: ACCESS_TOKEN,
-            content_type: CATEGORY_CONTENT_TYPE_ID
-        }
-    }, function(error, _response, body) {
-        if(error) {
-            res.status(500).end(JSON.stringify({error: error}));
-        } else {
-            res.status(200).end(body);
-        }
-    });
-});
-
-
-
-app.listen(PORT, function() {
-    console.log('App listening at http://localhost:%s', PORT);
-});
+app.listen(config.port);
