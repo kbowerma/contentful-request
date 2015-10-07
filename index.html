@@ -16,6 +16,31 @@
     <li><a href="/api/authors">/api/authors</a></li>
     <li><a href="/api/categories">/api/categories</a></li>
 
+<p/><p/>
+    <form method='POST', action='/api/new'>
+  <fieldset>
+    <legend>Create new Article</legend>
+
+    <label>Create new/Update Article</label><br/>
+    <input for='entityid' type="text" id='id' name='id' placeholder="create a random id">
+    <!-- <span class="help-block">Example block-level help text here.</span> -->
+
+    <br/>
+    <label>Title</label><br/>
+    <input for='title' type="text" id='title' name='title' placeholder="Title">
+
+    <br/>
+    <label>Body</label><br/>
+    <input for='body' type="text" id='body' name ='body' placeholder="Body of article">
+
+    <br/>
+    <button type="submit" value="Submit" class="btn">Submit</button>
+  </fieldset>
+</form>
+
+
+
+
   </div>
 </body>
 </html>
