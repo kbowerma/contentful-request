@@ -1,8 +1,9 @@
 {
   "dependencies": {
+    "body-parser": "~1.14.1",
+    "contentful": "^1.1.5",
     "express": "^4.13.3",
-    "request": "^2.64.0",
     "jade": "~1.9.2",
-    "body-parser":"~1.14.1"
+    "request": "^2.64.0"
   }
 }
