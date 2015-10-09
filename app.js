@@ -1,7 +1,8 @@
 var request = require('request'),
     express = require('express'),
     path    = require('path'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    contentful = require('contentful');
     /*
     var env = require('node-env-file');
     env(__dirname + '/.env');
@@ -9,8 +10,8 @@ var request = require('request'),
 
 
 // read config from env
-var SPACE_ID = process.env.SPACE_ID,
-    ACCESS_TOKEN = process.env.ACCESS_TOKEN,
+var SPACE_ID = process.env.SPACE_ID3,
+    ACCESS_TOKEN = process.env.ACCESS_TOKEN3,
     POST_CONTENT_TYPE_ID = process.env.POST_CONTENT_TYPE_ID,
     AUTHOR_CONTENT_TYPE_ID = process.env.AUTHOR_CONTENT_TYPE_ID,
     CATEGORY_CONTENT_TYPE_ID = process.env.CATEGORY_CONTENT_TYPE_ID,
@@ -24,6 +25,12 @@ var ROOT_URL_API = "https://api.contentful.com/spaces";
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Create client.
+var client = contentful.createClient({
+    space: SPACE_ID,
+    accessToken: ACCESS_TOKEN
+});
 
 /* default no path */
 app.get("/", function(req, res) {
@@ -80,6 +87,16 @@ app.get("/api/posts", function(req, res) {
             res.status(200).end(body);
         }
     });
+});
+
+/* Get post using native contentful npm */
+app.get('/npm/posts', function(req, res, next) {
+    client.entries({
+        content_type: POST_CONTENT_TYPE_ID
+    }).then(function(data) {
+        res.json(data);
+        console.log(data);
+    }).catch(next);
 });
 
 /* Get to authors */
