@@ -14,6 +14,9 @@
     },
     "SPACE_ID":{
       "required":true
+    },
+    "MANAGEMENT_TOKEN":{
+      "required":true
     }
   },
   "addons":[]
