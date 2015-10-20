@@ -29,7 +29,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Create client.
 var client = contentful.createClient({
     space: SPACE_ID,
-    accessToken: ACCESS_TOKEN
+    accessToken: ACCESS_TOKEN,
+    resolveLinks: false
 });
 
 /* default no path */
